@@ -16,7 +16,55 @@
  */
 function rpwe_get_default_args() {
 
-	$css_defaults = ".rpwe-block ul{\nlist-style: none !important;\nmargin-left: 0 !important;\npadding-left: 0 !important;\n}\n\n.rpwe-block li{\nborder-bottom: 1px solid #eee;\nmargin-bottom: 10px;\npadding-bottom: 10px;\nlist-style-type: none;\n}\n\n.rpwe-block a{\ndisplay: inline !important;\ntext-decoration: none;\n}\n\n.rpwe-block h3{\nbackground: none !important;\nclear: none;\nmargin-bottom: 0 !important;\nmargin-top: 0 !important;\nfont-weight: 400;\nfont-size: 12px !important;\nline-height: 1.5em;\n}\n\n.rpwe-thumb{\nborder: 1px solid #eee !important;\nbox-shadow: none !important;\nmargin: 2px 10px 2px 0;\npadding: 3px !important;\n}\n\n.rpwe-summary{\nfont-size: 12px;\n}\n\n.rpwe-time{\ncolor: #bbb;\nfont-size: 11px;\n}\n\n.rpwe-comment{\ncolor: #bbb;\nfont-size: 11px;\npadding-left: 5px;\n}\n\n.rpwe-alignleft{\ndisplay: inline;\nfloat: left;\n}\n\n.rpwe-alignright{\ndisplay: inline;\nfloat: right;\n}\n\n.rpwe-aligncenter{\ndisplay: block;\nmargin-left: auto;\nmargin-right: auto;\n}\n\n.rpwe-clearfix:before,\n.rpwe-clearfix:after{\ncontent: \"\";\ndisplay: table !important;\n}\n\n.rpwe-clearfix:after{\nclear: both;\n}\n\n.rpwe-clearfix{\nzoom: 1;\n}\n";
+	$css_defaults = ".rpwe-block ul{
+	\nlist-style: none !important;
+	\nmargin-left: 0 !important;
+	\npadding-left: 0 !important;
+	\n}
+	\n\n.rpwe-block li{
+	\nborder-bottom: 1px solid #eee;
+	\nmargin-bottom: 0;
+	\npadding-bottom: 0;
+	\nlist-style-type: none;
+	\n}
+	\n\n.rpwe-block a{
+	\ndisplay: inline !important;
+	\ntext-decoration: none;\n}
+	\n\n.rpwe-block h3{
+	\nbackground: none !important;
+	\nclear: none;\nmargin-bottom: 0 !important;
+	\nmargin-top: 0 !important;\nfont-weight: 400;
+	\nfont-size: 12px !important;\nline-height: 1.5em;
+	\n}
+	\n\n.rpwe-thumb{\nborder: 1px solid #eee !important;
+	\nbox-shadow: none !important;\nmargin: 2px 10px 2px 0;
+	\npadding: 3px !important;\n}
+	\n\n.rpwe-summary{
+	\nfont-size: 12px;\n}\n\n.rpwe-time{
+	\ncolor: #bbb;\nfont-size: 11px;\n}
+	\n\n.rpwe-comment{
+	\ncolor: #bbb;\nfont-size: 11px;
+	\npadding-left: 5px;\n}
+	\n\n.rpwe-alignleft{
+	\ndisplay: inline;
+	\nfloat: left;\n}
+	\n\n.rpwe-alignright{
+	\ndisplay: inline;
+	\nfloat: right;
+	\n}
+	\n\n.rpwe-aligncenter{
+	\ndisplay: block;
+	\nmargin-left: auto;
+	\nmargin-right: auto;
+	\n}
+	\n\n.rpwe-clearfix:before,
+	\n.rpwe-clearfix:after{
+	\ncontent: \"\";
+	\ndisplay: table !important;\n}
+	\n\n.rpwe-clearfix:after{
+	\nclear: both;\n}
+	\n\n.rpwe-clearfix{
+	\nzoom: 1;\n}\n";
 
 	$defaults = array(
 		'title'             => esc_attr__( 'Recent Posts', 'rpwe' ),
@@ -103,7 +151,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 	// Get the posts query.
 	$posts = rpwe_get_posts( $args );
-
+	$compteur = 1;
 	if ( $posts->have_posts() ) :
 
 		// Recent posts wrapper
@@ -114,27 +162,31 @@ function rpwe_get_recent_posts( $args = array() ) {
 				while ( $posts->have_posts() ) : $posts->the_post();
 
 					// Thumbnails
+
 					$thumb_id = get_post_thumbnail_id(); // Get the featured image id.
-					$img_url  = wp_get_attachment_url( $thumb_id ); // Get img URL.
+					//$img_url  = wp_get_attachment_url( $thumb_id ); // Get img URL.
+
 
 					// Display the image url and crop using the resizer.
-					$image    = rpwe_resize( $img_url, $args['thumb_width'], $args['thumb_height'], true );
+                    $image    = wp_get_attachment_image_src( $thumb_id,'medium_large', true ); //return un tableau
+                    //$image2   = rpwe_resize( $img_url, $args['thumb_width'], $args['thumb_height'], true );
 
 					// Start recent posts markup.
-					$html .= '<li class="rpwe-li rpwe-clearfix d-flex">';
+					$html .= '<li class="rpwe-li rpwe-clearfix d-flex flexRow'.$compteur.'">';
 
 						if ( $args['thumb'] ) :
 
 							// Check if post has post thumbnail.
 							if ( has_post_thumbnail() ) :
 								$html .= '<div class="img flex-even"><a class="rpwe-img " href="' . esc_url( get_permalink() ) . '"  rel="bookmark">';
-									if ( $image ) :
-										$html .= '<img class=" rpwe-thumb" src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title() ) . '">';
+									if ( $image[0] ) :
+
+										$html .= '<img class=" rpwe-thumb" src="' . esc_url( $image[0] ) . '" alt="' . esc_attr( get_the_title() ) . '">';
 									else :
 										$html .= get_the_post_thumbnail( get_the_ID(),
 											array( $args['thumb_width'], $args['thumb_height'] ),
 											array(
-												'class' =>  ' rpwe-thumb the-post-thumbnail',
+												'class' => ' rpwe-thumb the-post-thumbnail',
 												'alt'   => esc_attr( get_the_title() )
 											)
 										);
@@ -204,7 +256,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 						endif;
 
 					$html .= '</li>';
-
+                $compteur ++;
 				endwhile;
 
 			$html .= '</ul>';
@@ -307,7 +359,7 @@ function rpwe_get_posts( $args = array() ) {
 function rpwe_custom_styles() {
 	?>
 <style>
-.rpwe-block ul{list-style:none!important;margin-left:0!important;padding-left:0!important;}.rpwe-block li{border-bottom:1px solid #eee;margin-bottom:10px;padding-bottom:10px;list-style-type: none;}.rpwe-block a{display:inline!important;text-decoration:none;}.rpwe-block h3{background:none!important;clear:none;margin-bottom:0!important;margin-top:0!important;font-weight:400;font-size:12px!important;line-height:1.5em;}.rpwe-thumb{border:1px solid #EEE!important;box-shadow:none!important;margin:2px 10px 2px 0;padding:3px!important;}.rpwe-summary{font-size:12px;}.rpwe-time{color:#bbb;font-size:11px;}.rpwe-comment{color:#bbb;font-size:11px;padding-left:5px;}.rpwe-alignleft{display:inline;float:left;}.rpwe-alignright{display:inline;float:right;}.rpwe-aligncenter{display:block;margin-left: auto;margin-right: auto;}.rpwe-clearfix:before,.rpwe-clearfix:after{content:"";display:table !important;}.rpwe-clearfix:after{clear:both;}.rpwe-clearfix{zoom:1;}
+.rpwe-block ul{list-style:none!important;margin-left:0!important;padding-left:0!important;}.rpwe-block li{border-bottom:1px solid #eee;margin-bottom:0px;padding-bottom:0px;list-style-type: none;}.rpwe-block a{display:inline!important;text-decoration:none;}.rpwe-block h3{background:none!important;clear:none;margin-bottom:0!important;margin-top:0!important;font-weight:400;font-size:12px!important;line-height:1.5em;}.rpwe-thumb{border:1px solid #EEE!important;box-shadow:none!important;margin:2px 10px 2px 0;padding:3px!important;}.rpwe-summary{font-size:12px;}.rpwe-time{color:#bbb;font-size:11px;}.rpwe-comment{color:#bbb;font-size:11px;padding-left:5px;}.rpwe-alignleft{display:inline;float:left;}.rpwe-alignright{display:inline;float:right;}.rpwe-aligncenter{display:block;margin-left: auto;margin-right: auto;}.rpwe-clearfix:before,.rpwe-clearfix:after{content:"";display:table !important;}.rpwe-clearfix:after{clear:both;}.rpwe-clearfix{zoom:1;}
 </style>
 	<?php
 }
