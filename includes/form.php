@@ -194,18 +194,18 @@
 			</label>
 		</p>
 
-		<p>
-			<label class="rpwe-block" for="<?php echo $this->get_field_id( 'thumb_height' ); ?>">
-				<?php _e( 'Thumbnail (height,width,align)', 'recent-posts-widget-extended' ); ?>
-			</label>
-			<input class= "small-input" id="<?php echo $this->get_field_id( 'thumb_height' ); ?>" name="<?php echo $this->get_field_name( 'thumb_height' ); ?>" type="number" step="1" min="0" value="<?php echo (int)( $instance['thumb_height'] ); ?>" />
-			<input class="small-input" id="<?php echo $this->get_field_id( 'thumb_width' ); ?>" name="<?php echo $this->get_field_name( 'thumb_width' ); ?>" type="number" step="1" min="0" value="<?php echo (int)( $instance['thumb_width'] ); ?>"/>
-			<select class="small-input" id="<?php echo $this->get_field_id( 'thumb_align' ); ?>" name="<?php echo $this->get_field_name( 'thumb_align' ); ?>">
-				<option value="rpwe-alignleft" <?php selected( $instance['thumb_align'], 'rpwe-alignleft' ); ?>><?php _e( 'Left', 'recent-posts-widget-extended' ) ?></option>
-				<option value="rpwe-alignright" <?php selected( $instance['thumb_align'], 'rpwe-alignright' ); ?>><?php _e( 'Right', 'recent-posts-widget-extended' ) ?></option>
-				<option value="rpwe-aligncenter" <?php selected( $instance['thumb_align'], 'rpwe-aligncenter' ); ?>><?php _e( 'Center', 'recent-posts-widget-extended' ) ?></option>
-			</select>
-		</p>
+<!--		<p>-->
+<!--			<label class="rpwe-block" for="--><?php //echo $this->get_field_id( 'thumb_height' ); ?><!--">-->
+<!--				--><?php //_e( 'Thumbnail (height,width,align)', 'recent-posts-widget-extended' ); ?>
+<!--			</label>-->
+<!--			<input class= "small-input" id="--><?php //echo $this->get_field_id( 'thumb_height' ); ?><!--" name="--><?php //echo $this->get_field_name( 'thumb_height' ); ?><!--" type="number" step="1" min="0" value="--><?php //echo (int)( $instance['thumb_height'] ); ?><!--" />-->
+<!--			<input class="small-input" id="--><?php //echo $this->get_field_id( 'thumb_width' ); ?><!--" name="--><?php //echo $this->get_field_name( 'thumb_width' ); ?><!--" type="number" step="1" min="0" value="--><?php //echo (int)( $instance['thumb_width'] ); ?><!--"/>-->
+<!--			<select class="small-input" id="--><?php //echo $this->get_field_id( 'thumb_align' ); ?><!--" name="--><?php //echo $this->get_field_name( 'thumb_align' ); ?><!--">-->
+<!--				<option value="rpwe-alignleft" --><?php //selected( $instance['thumb_align'], 'rpwe-alignleft' ); ?><!-->--><?php //_e( 'Left', 'recent-posts-widget-extended' ) ?><!--</option>-->
+<!--				<option value="rpwe-alignright" --><?php //selected( $instance['thumb_align'], 'rpwe-alignright' ); ?><!-->--><?php //_e( 'Right', 'recent-posts-widget-extended' ) ?><!--</option>-->
+<!--				<option value="rpwe-aligncenter" --><?php //selected( $instance['thumb_align'], 'rpwe-aligncenter' ); ?><!-->--><?php //_e( 'Center', 'recent-posts-widget-extended' ) ?><!--</option>-->
+<!--			</select>-->
+<!--		</p>-->
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'thumb_default' ); ?>">
@@ -216,6 +216,13 @@
 		</p>
 
 	<?php } ?>
+
+    <p>
+        <label for="<?php echo $this->get_field_id( 'color' ); ?>">
+            <?php _e( 'Couleur de l\'arrière plan', 'recent-posts-widget-extended' ); ?>
+        </label>
+        <input class="widefat" id="<?php echo $this->get_field_id( 'color' ); ?>" name="<?php echo $this->get_field_name( 'color' ); ?>" type="text" value="<?php echo $instance['color'] ; ?>" />
+    </p>
 
 	<p>
 		<input id="<?php echo $this->get_field_id( 'excerpt' ); ?>" name="<?php echo $this->get_field_name( 'excerpt' ); ?>" type="checkbox" <?php checked( $instance['excerpt'] ); ?> />
@@ -278,17 +285,17 @@
 
 <div class="clear"></div>
 
-<p>
-	<input id="<?php echo $this->get_field_id( 'styles_default' ); ?>" name="<?php echo $this->get_field_name( 'styles_default' ); ?>" type="checkbox" <?php checked( $instance['styles_default'] ); ?> />
-	<label for="<?php echo $this->get_field_id( 'styles_default' ); ?>">
-		<?php _e( 'Use Default Styles', 'recent-posts-widget-extended' ); ?>
-	</label>
-</p>
+<!--<p>-->
+<!--	<input id="--><?php //echo $this->get_field_id( 'styles_default' ); ?><!--" name="--><?php //echo $this->get_field_name( 'styles_default' ); ?><!--" type="checkbox" --><?php //checked( $instance['styles_default'] ); ?><!-- />-->
+<!--	<label for="--><?php //echo $this->get_field_id( 'styles_default' ); ?><!--">-->
+<!--		--><?php //_e( 'Use Default Styles', 'recent-posts-widget-extended' ); ?>
+<!--	</label>-->
+<!--</p>-->
 
-<p>
-	<label for="<?php echo $this->get_field_id( 'css' ); ?>">
-		<?php _e( 'Custom CSS', 'recent-posts-widget-extended' ); ?>
-	</label>
-	<textarea class="widefat" id="<?php echo $this->get_field_id( 'css' ); ?>" name="<?php echo $this->get_field_name( 'css' ); ?>" style="height:180px;"><?php echo $instance['css']; ?></textarea>
-	<small><?php _e( 'If you turn off the default styles, you can use these css code to customize the recent posts style.', 'recent-posts-widget-extended' ); ?></small>
-</p>
+<!--<p>-->
+<!--	<label for="--><?php //echo $this->get_field_id( 'css' ); ?><!--">-->
+<!--		--><?php //_e( 'Custom CSS', 'recent-posts-widget-extended' ); ?>
+<!--	</label>-->
+<!--	<textarea class="widefat" id="--><?php //echo $this->get_field_id( 'css' ); ?><!--" name="--><?php //echo $this->get_field_name( 'css' ); ?><!--" style="height:180px;">--><?php //echo $instance['css']; ?><!--</textarea>-->
+<!--	<small>--><?php //_e( 'If you turn off the default styles, you can use these css code to customize the recent posts style.', 'recent-posts-widget-extended' ); ?><!--</small>-->
+<!--</p>-->

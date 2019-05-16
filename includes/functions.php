@@ -16,56 +16,6 @@
  */
 function rpwe_get_default_args() {
 
-	$css_defaults = ".rpwe-block ul{
-	\nlist-style: none !important;
-	\nmargin-left: 0 !important;
-	\npadding-left: 0 !important;
-	\n}
-	\n\n.rpwe-block li{
-	\nborder-bottom: 1px solid #eee;
-	\nmargin-bottom: 0;
-	\npadding-bottom: 0;
-	\nlist-style-type: none;
-	\n}
-	\n\n.rpwe-block a{
-	\ndisplay: inline !important;
-	\ntext-decoration: none;\n}
-	\n\n.rpwe-block h3{
-	\nbackground: none !important;
-	\nclear: none;\nmargin-bottom: 0 !important;
-	\nmargin-top: 0 !important;\nfont-weight: 400;
-	\nfont-size: 12px !important;\nline-height: 1.5em;
-	\n}
-	\n\n.rpwe-thumb{\nborder: 1px solid #eee !important;
-	\nbox-shadow: none !important;\nmargin: 2px 10px 2px 0;
-	\npadding: 3px !important;\n}
-	\n\n.rpwe-summary{
-	\nfont-size: 12px;\n}\n\n.rpwe-time{
-	\ncolor: #bbb;\nfont-size: 11px;\n}
-	\n\n.rpwe-comment{
-	\ncolor: #bbb;\nfont-size: 11px;
-	\npadding-left: 5px;\n}
-	\n\n.rpwe-alignleft{
-	\ndisplay: inline;
-	\nfloat: left;\n}
-	\n\n.rpwe-alignright{
-	\ndisplay: inline;
-	\nfloat: right;
-	\n}
-	\n\n.rpwe-aligncenter{
-	\ndisplay: block;
-	\nmargin-left: auto;
-	\nmargin-right: auto;
-	\n}
-	\n\n.rpwe-clearfix:before,
-	\n.rpwe-clearfix:after{
-	\ncontent: \"\";
-	\ndisplay: table !important;\n}
-	\n\n.rpwe-clearfix:after{
-	\nclear: both;\n}
-	\n\n.rpwe-clearfix{
-	\nzoom: 1;\n}\n";
-
 	$defaults = array(
 		'title'             => esc_attr__( 'Recent Posts', 'rpwe' ),
 		'title_url'         => '',
@@ -95,9 +45,8 @@ function rpwe_get_default_args() {
 		'readmore'         => false,
 		'readmore_text'    => __( 'Read More &raquo;', 'recent-posts-widget-extended' ),
 		'comment_count'    => false,
-
+        'color'            =>'',
 		'styles_default'   => true,
-		'css'              => $css_defaults,
 		'cssID'            => '',
 		'css_class'        => '',
 		'before'           => '',
@@ -139,19 +88,24 @@ function rpwe_get_recent_posts( $args = array() ) {
 	// Allow devs to hook in stuff before the loop.
 	do_action( 'rpwe_before_loop' );
 
-	// Display the default style of the plugin.
+    // Toujours utiliser le default style du plugin que j'ai modifier en bas du présent fichier.
+    $args['styles_default'] = true ;
+    $args['css'] = "";
 	if ( $args['styles_default'] === true ) {
 		rpwe_custom_styles();
 	}
-
 	// If the default style is disabled then use the custom css if it's not empty.
-	if ( $args['styles_default'] === false && ! empty( $args['css'] ) ) {
-		echo '<style>' . $args['css'] . '</style>';
-	}
+//	if ( $args['styles_default'] === false && ! empty( $args['css'] ) ) {
+//		echo '<style>' . $args['css'] . '</style>';
+//	}
+    //pour les couleurs d'arrière plan
+
+    $tabColor = explode(" ", $args['color']);
 
 	// Get the posts query.
 	$posts = rpwe_get_posts( $args );
-	$compteur = 1;
+	$compteurFlex = 1;
+    $compteurColor = 0;
 	if ( $posts->have_posts() ) :
 
 		// Recent posts wrapper
@@ -172,7 +126,7 @@ function rpwe_get_recent_posts( $args = array() ) {
                     //$image2   = rpwe_resize( $img_url, $args['thumb_width'], $args['thumb_height'], true );
 
 					// Start recent posts markup.
-					$html .= '<li class="rpwe-li rpwe-clearfix d-flex flexRow'.$compteur.'">';
+					$html .= '<li class="rpwe-li rpwe-clearfix d-flex flexRow'.$compteurFlex.'">';
 
 						if ( $args['thumb'] ) :
 
@@ -219,7 +173,12 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 						endif;
 
-						$html .= '<div class="infoPosts flex-even"><h3 class="rpwe-title"><a href="' . esc_url( get_permalink() ) . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'recent-posts-widget-extended' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark">' . esc_attr( get_the_title() ) . '</a></h3>';
+                        $tabColor[$compteurColor] ? $backgroundColor = $tabColor[$compteurColor] : $backgroundColor = '#8b3800';
+						$html .= '<div class="infoPosts flex-even" style="background-color:'.$backgroundColor.';">
+                                    <h3 class="rpwe-title">
+                                    <a href="' . esc_url( get_permalink() ) . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'recent-posts-widget-extended' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark">' . esc_attr( get_the_title() ) . '</a>
+                                    </h3>
+                                    <div class="hr"></div>';
 
 						if ( $args['date'] ) :
 							$date = get_the_date();
@@ -256,7 +215,8 @@ function rpwe_get_recent_posts( $args = array() ) {
 						endif;
 
 					$html .= '</li>';
-                $compteur ++;
+                    $compteurFlex === 1 ? $compteurFlex ++ : $compteurFlex =1;
+                    $compteurColor ++;
 				endwhile;
 
 			$html .= '</ul>';
@@ -359,7 +319,95 @@ function rpwe_get_posts( $args = array() ) {
 function rpwe_custom_styles() {
 	?>
 <style>
-.rpwe-block ul{list-style:none!important;margin-left:0!important;padding-left:0!important;}.rpwe-block li{border-bottom:1px solid #eee;margin-bottom:0px;padding-bottom:0px;list-style-type: none;}.rpwe-block a{display:inline!important;text-decoration:none;}.rpwe-block h3{background:none!important;clear:none;margin-bottom:0!important;margin-top:0!important;font-weight:400;font-size:12px!important;line-height:1.5em;}.rpwe-thumb{border:1px solid #EEE!important;box-shadow:none!important;margin:2px 10px 2px 0;padding:3px!important;}.rpwe-summary{font-size:12px;}.rpwe-time{color:#bbb;font-size:11px;}.rpwe-comment{color:#bbb;font-size:11px;padding-left:5px;}.rpwe-alignleft{display:inline;float:left;}.rpwe-alignright{display:inline;float:right;}.rpwe-aligncenter{display:block;margin-left: auto;margin-right: auto;}.rpwe-clearfix:before,.rpwe-clearfix:after{content:"";display:table !important;}.rpwe-clearfix:after{clear:both;}.rpwe-clearfix{zoom:1;}
+.rpwe-block ul{
+    list-style:none;
+    margin-left:0;
+    padding-left:0;
+    margin-bottom: 0;
+}
+.rpwe-block li {
+    margin-bottom:0;
+    padding-bottom:0;
+    list-style-type: none;
+}
+.infoPosts{
+    text-align: center;
+}
+.rpwe-block a{
+    display:inline!important;
+    text-decoration:none;
+    color: white;
+}
+.rpwe-block h3{
+    background:none;
+    clear:none;
+    margin-bottom:0;
+    margin-top:0;
+    font-weight:400;
+    font-size:18px;
+    line-height:1.5em;
+    padding: 20px 0 20px 0;
+}
+.rpwe-thumb{
+    box-shadow:none!important;
+}
+.rpwe-summary{
+    font-size:12px;
+    color: white;
+    padding: 10px 10px 20px 10px;
+}
+.rpwe-block h3 {
+    font-size: 38px;
+}
+.rpwe-time{
+    color:#bbb;
+    font-size:11px;
+}.rpwe-comment{
+     color:#bbb;
+     font-size:11px;
+     padding-left:5px;
+ }
+.rpwe-alignleft{
+       display:inline;
+    float:left;
+}
+.rpwe-alignright{
+    display:inline;
+    float:right;
+}
+.rpwe-aligncenter{
+     display:block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.rpwe-clearfix:before,.rpwe-clearfix:after{
+    content:"";display:table !important;
+}
+.rpwe-clearfix:after{
+    clear:both;
+}
+.rpwe-clearfix{
+    zoom:1;
+}
+@media screen and (min-width: 425px) {
+    .rpwe-summary{
+        font-size:15px;
+        padding: 20px 10px 20px 10px;
+    }
+}
+@media screen and (min-width: 576px) {
+    .rpwe-summary{
+        font-size:15px;
+        padding: 30px 20px ;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .rpwe-summary{
+        font-size:16px;
+        padding: 0 50px 20px 50px;
+    }
+}
+
 </style>
 	<?php
 }

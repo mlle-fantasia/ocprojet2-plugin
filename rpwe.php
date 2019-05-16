@@ -48,8 +48,8 @@ class RPW_Extended {
 		// Load the functions files.
 		add_action( 'plugins_loaded', array( &$this, 'includes' ), 3 );
 
-		// Load the admin style.
-		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_style' ) );
+		// Load the style.
+        add_action( 'admin_enqueue_scripts', array( &$this, 'admin_style' ) );
 
 		// Register widget.
 		add_action( 'widgets_init', array( &$this, 'register_widget' ) );
