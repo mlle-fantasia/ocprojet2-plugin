@@ -173,7 +173,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 						endif;
 
-                        $tabColor[$compteurColor] ? $backgroundColor = $tabColor[$compteurColor] : $backgroundColor = '#8b3800';
+                        $tabColor[$compteurColor] ? $backgroundColor = '#35435d' : $backgroundColor = '#35435d';
 						$html .= '<div class="infoPosts flex-even" style="background-color:'.$backgroundColor.';">
                                     <h3 class="rpwe-title">
                                     <a href="' . esc_url( get_permalink() ) . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'recent-posts-widget-extended' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark">' . esc_attr( get_the_title() ) . '</a>
