@@ -125,6 +125,7 @@ class Recent_Posts_Widget_Extended extends WP_Widget {
 		$instance['thumb_width']      = intval( $new_instance['thumb_width'] );
 		$instance['thumb_default']    = esc_url_raw( $new_instance['thumb_default'] );
         $instance['color']            = $new_instance['color'] ;
+        $instance['mb_cat']              = isset( $new_instance['mb_cat'] ) ? (bool) $new_instance['mb_cat'] : false;
 
         $instance['thumb_align']      = esc_attr( $new_instance['thumb_align'] );
 

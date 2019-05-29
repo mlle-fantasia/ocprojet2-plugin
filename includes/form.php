@@ -217,11 +217,19 @@
 
 	<?php } ?>
 
+
     <p>
         <label for="<?php echo $this->get_field_id( 'color' ); ?>">
             <?php _e( 'Couleur de l\'arrière plan', 'recent-posts-widget-extended' ); ?>
         </label>
         <input class="widefat" id="<?php echo $this->get_field_id( 'color' ); ?>" name="<?php echo $this->get_field_name( 'color' ); ?>" type="text" value="<?php echo $instance['color'] ; ?>" />
+    </p>
+
+    <p>
+        <input id="<?php echo $this->get_field_id( 'mb_cat' ); ?>" name="<?php echo $this->get_field_name( 'mb_cat' ); ?>" type="checkbox" <?php checked( $instance['mb_cat'] ); ?> />
+        <label for="<?php echo $this->get_field_id( 'mb_cat' ); ?>">
+            <?php _e( 'Afficher la catégorie', 'recent-posts-widget-extended' ); ?>
+        </label>
     </p>
 
 	<p>

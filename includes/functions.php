@@ -45,7 +45,8 @@ function rpwe_get_default_args() {
 		'readmore'         => false,
 		'readmore_text'    => __( 'Read More &raquo;', 'recent-posts-widget-extended' ),
 		'comment_count'    => false,
-        'color'            =>'',
+        'color'            => '',
+		'mb-cat'           => false,
 		'styles_default'   => true,
 		'cssID'            => '',
 		'css_class'        => '',
@@ -205,12 +206,23 @@ function rpwe_get_recent_posts( $args = array() ) {
 							$html .= '<a class="rpwe-comment comment-count" href="' . get_comments_link() . '">' . $comments . '</a>';
 						endif;
 
+                        if ( $args['mb_cat'] ) :
+                            $categorie= "";
+
+                            if($args['cat'][0]==="14"){$categorie= "Chalet à louer";}else{$categorie= "Chalet à vendre";};
+                            $html .= '<div class="mb-cat"><p>'.$categorie.'</p></div>';
+
+                            //$html .= '</p></div>';
+                        endif;
 						if ( $args['excerpt'] ) :
-							$html .= '<div class="rpwe-summary">';
+							$html .= '<div class=" rpwe-summary">';
 								$html .= wp_trim_words( apply_filters( 'rpwe_excerpt', get_the_excerpt() ), $args['length'], ' &hellip;' );
-								if ( $args['readmore'] ) :
-									$html .= '<a href="' . esc_url( get_permalink() ) . '" class="more-link">' . $args['readmore_text'] . '</a>';
-								endif;
+//								if ( $args['readmore'] ) :
+//									$html .= '<a href="' . esc_url( get_permalink() ) . '" class="more-link">' . $args['readmore_text'] . '</a>';
+//								endif;
+                            $html .= '<div><button class="btn btn-suite">';
+                                $html .= '<a href="' . esc_url( get_permalink() ) . '" class="link-suite">Venez découvrir ce Chalet</a>';
+                            $html .= '</button></div>';
 							$html .= '</div></div>';
 						endif;
 
@@ -351,10 +363,30 @@ function rpwe_custom_styles() {
 .rpwe-thumb{
     box-shadow:none!important;
 }
+.mb-cat{
+    color: #778490;
+    font-size: 15px;
+}
 .rpwe-summary{
     font-size:12px;
     color: white;
     padding: 10px 10px 20px 10px;
+}
+.btn-suite{
+    box-shadow: #191f2b 2px 2px 5px;
+    background-color: black;
+    border: 0;
+    border-radius: 3px;
+    padding: 10px 27px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.btn-suite:hover{
+    background-color: #4b5f72;
+    box-shadow: #191c1f 3px 3px 5px;
+}
+.btn-suite a{
+   font-size: 18px;
 }
 .rpwe-block h3 {
     font-size: 38px;
@@ -443,10 +475,20 @@ h5 {
         padding: 30px 20px ;
     }
 }
+@media screen and (min-width: 768px) {
+
+}
 @media screen and (min-width: 1024px) {
     .rpwe-summary{
         font-size:16px;
         padding: 40px 70px 20px 70px;
+    }
+    .rpwe-summary{
+        line-height: 35px;
+    }
+    .btn-suite{
+        margin-top: 40px;
+        margin-bottom: 0;
     }
 }
 
